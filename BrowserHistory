@@ -1,0 +1,59 @@
+class HistoryEntry {
+
+  String url;
+  HistoryEntry prev;
+  HistoryEntry next;
+
+  public HistoryEntry(String url) {
+    this.url = url;
+    this.prev = null;
+    this.next = null;
+  }
+}
+
+class DoublyLinkedListHistory {
+
+  public HistoryEntry current;
+
+  public DoublyLinkedListHistory() {
+    this.current = null;
+  }
+
+  public void visit(String url) {
+    HistoryEntry newEntry = new HistoryEntry(url);
+    if (current != null) {
+      current.next = newEntry;
+      newEntry.prev = current;
+    }
+    current = newEntry;
+    newEntry.next = null;
+  }
+
+  public String back(int k) {
+    while (current != null && k-- > 0) {
+      current = current.prev;
+    }
+    return current != null ? current.url : "";
+  }
+
+  public String forward(int k) {
+    while (current != null && k-- > 0) {
+      current = current.next;
+    }
+    return current != null ? current.url : "";
+  }
+}
+
+public class BrowserHistory {
+
+  public static void main(String[] args) {
+    DoublyLinkedListHistory doublyLinkedListHistory = new DoublyLinkedListHistory();
+    doublyLinkedListHistory.visit("A");
+    doublyLinkedListHistory.visit("B");
+    doublyLinkedListHistory.visit("C");
+    System.out.println(doublyLinkedListHistory.back(2));
+    System.out.println(doublyLinkedListHistory.forward(1));
+    doublyLinkedListHistory.visit("D");
+    System.out.println(doublyLinkedListHistory.current.url);
+  }
+}
